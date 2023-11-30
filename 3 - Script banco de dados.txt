@@ -1,0 +1,80 @@
+--Tabelas Iniciais--
+
+create table login(
+	id_login numeric(10) not null,
+	Email varchar(100) not null,
+	Senha varchar(36) not null
+)
+create table Atividades(
+	id_atividade numeric(10) not null,
+	Enunciado varchar(200) not null,
+	Resposta varchar(200) not null
+)
+create table Turmas(
+	id_turm numeric(10) not null,
+	nm_turma varchar(100) not null,
+	Qtd_alunos numeric(3) not null
+)
+create table professores (
+	id_prof numeric(10) not null,
+	Nome varchar(100) not null,
+	id_login numeric(10) not null
+)
+create table professores_turmas(
+	id_prof numeric(10) not null,
+	id_turm numeric(10) not null,
+	num_sala numeric(10) not null
+)
+create table turmas_atividades(
+	id_turm numeric(10) not null,
+	id_atividade numeric(10) not null,
+	prazo_entrega date not null
+)
+
+--Primary keys--
+
+alter table professores add constraint pk_professores primary key (id_prof);
+alter table login add constraint pk_login primary key (id_login);
+alter table turmas add constraint pk_turmas primary key (id_turm);
+alter table atividades add constraint pk_atividades primary key (id_atividade);
+alter table turmas_atividades add constraint pk_turmas_atv primary key (id_turm);
+alter table turmas_atividades add constraint pk_atv_turmas primary key (id_atividade);
+alter table professores_turmas add constraint pk_prof_turmas primary key (id_prof);
+alter table professores_turmas add constraint pk_turmas_prof primary key (id_turm);
+
+--foreign keys--
+
+alter table professores add constraint fk_professores_login foreign key (id_login) references login(id_login);
+alter table professores_turmas add constraint fk_professoresturmas_professores foreign key (id_prof) references professores(id_prof);
+alter table professores_turmas add constraint fk_professoresturmas_turmas foreign key (id_turm) references turmas(id_turm);
+alter table turmas_atividades add constraint fk_turmasatividades_atividades foreign key (id_atividade) references atividades(id_atividade);
+alter table turmas_atividades add constraint fk_turmasatividades_turmas foreign key (id_turm) references turmas(id_turm);
+
+
+--inserção de dados--
+
+insert into login(id_login, email, senha) values (1, 'alex@gmail.com', 123),
+(2, 'joao@gmail.com', 173);
+
+insert into professores (id_prof, nome, id_login) values
+(1, 'alex', 1),
+(2, 'joao', 2);
+
+insert into atividades(id_atividade, enunciado, Resposta) values
+(1, 'responda quais estao certas:', 'A, B, D, E'),
+(2, 'sublinhe os verdadeiros', 'estranho, bom, mal');
+
+insert into turmas(id_turm, nm_turma, Qtd_alunos) values
+(1, 'descobridores', 28),
+(2, 'exploradores', 30);
+
+insert into professores_turmas (id_prof, id_turm, num_sala) values
+(1, 2, 312),
+(2, 1, 256);
+
+insert into turmas_atividades (id_turm, id_atividade, prazo_entrega) values
+(1, 2, 10/12/2022),
+(2, 1, 11/12/2022);
+
+
+
